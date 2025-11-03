@@ -1,0 +1,16 @@
+package com.parkingit.iam.application.internal.outboundservices.acl;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+//@Service
+//@AllArgsConstructor
+//public class ExternalNotificationService {
+//    private final NotificationContextFacade notificationContextFacade;
+//
+//    public void createNotification(UUID userId, String title, String message) {
+//        notificationContextFacade.createNotification(userId, title, message);
+//    }
+//}
