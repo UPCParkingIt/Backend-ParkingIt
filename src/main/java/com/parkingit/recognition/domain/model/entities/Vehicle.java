@@ -38,8 +38,13 @@ public class Vehicle extends AuditableModel {
         this.licensePlateNumber = licensePlateNumber;
         this.vehicleType = vehicleType;
         this.color = color;
+<<<<<<< Updated upstream
         this.isActive = true;
         this.vehicleStatus = VehicleStatus.UNREGISTERED;
+=======
+        this.vehicleStatus = VehicleStatus.UNREGISTERED;
+        this.isActive = true;
+>>>>>>> Stashed changes
     }
 
     public void deactivate() {
