@@ -28,11 +28,8 @@ public class FaceRecognition extends AuditableAbstractAggregateRoot<FaceRecognit
     @Column(length = 2048)
     private String faceEncodingVector;
 
-<<<<<<< Updated upstream
-=======
     private Boolean isActive;
 
->>>>>>> Stashed changes
     public FaceRecognition() {}
 
     public FaceRecognition(User user, Device device, byte[] faceImageData, String faceEncodingVector) {
@@ -40,8 +37,6 @@ public class FaceRecognition extends AuditableAbstractAggregateRoot<FaceRecognit
         this.device = device;
         this.faceImageData = faceImageData;
         this.faceEncodingVector = faceEncodingVector;
-<<<<<<< Updated upstream
-=======
         this.isActive = true;
     }
 
@@ -51,6 +46,5 @@ public class FaceRecognition extends AuditableAbstractAggregateRoot<FaceRecognit
 
     public void activate() {
         this.isActive = true;
->>>>>>> Stashed changes
     }
 }

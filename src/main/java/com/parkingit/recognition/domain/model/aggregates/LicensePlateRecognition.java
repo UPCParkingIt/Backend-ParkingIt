@@ -27,11 +27,8 @@ public class LicensePlateRecognition extends AuditableAbstractAggregateRoot<Lice
     @Lob
     private byte[] plateImageData;
 
-<<<<<<< Updated upstream
-=======
     private Boolean isActive;
 
->>>>>>> Stashed changes
     public LicensePlateRecognition() {}
 
     public LicensePlateRecognition(User user, Device device, Vehicle vehicle, byte[] plateImageData) {
@@ -39,8 +36,6 @@ public class LicensePlateRecognition extends AuditableAbstractAggregateRoot<Lice
         this.device = device;
         this.vehicle = vehicle;
         this.plateImageData = plateImageData;
-<<<<<<< Updated upstream
-=======
         this.isActive = true;
     }
 
@@ -50,6 +45,5 @@ public class LicensePlateRecognition extends AuditableAbstractAggregateRoot<Lice
 
     public void activate() {
         this.isActive = true;
->>>>>>> Stashed changes
     }
 }
