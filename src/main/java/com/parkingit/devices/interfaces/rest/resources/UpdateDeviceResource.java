@@ -1,9 +1,9 @@
 package com.parkingit.devices.interfaces.rest.resources;
 
-import java.util.UUID;
+import com.parkingit.devices.domain.model.valueobjects.DeviceType;
 
 public record UpdateDeviceResource(
         String deviceName,
-        UUID userId
+        DeviceType deviceType
 ) {
 }

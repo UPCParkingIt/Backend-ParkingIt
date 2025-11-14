@@ -22,19 +22,9 @@ public class DeviceCommandServiceImpl implements DeviceCommandService {
     @Override
     public Optional<Device> handle(CreateDeviceCommand command) {
         try {
-            var user = externalIamService.fetchUserById(command.userId());
-
-            if (user == null) throw new IllegalArgumentException("User not found with ID: " + command.userId());
-
-            var existingDevice = repository.existsDeviceByUser_IdAndDeviceNameNot(command.userId(), command.deviceName());
-
-            if (existingDevice != null) {
-                throw new IllegalArgumentException("Device with name '" + command.deviceName() + "' already exists for user ID: " + command.userId());
-            }
-
             var newDevice = new Device(
                     command.deviceName(),
-                    user
+                    command.deviceType()
             );
 
             var savedDevice = repository.save(newDevice);
@@ -84,31 +74,14 @@ public class DeviceCommandServiceImpl implements DeviceCommandService {
             }
 
             var currentName = device.get().getDeviceName();
-            var currentUserId = device.get().getUser() != null ? device.get().getUser().getId() : null;
 
             boolean shouldUpdateName = command.deviceName() != null && !command.deviceName().isBlank() && !command.deviceName().equals(currentName);
-            boolean shouldUpdateUser = command.userId() != null && (!command.userId().equals(currentUserId));
 
-            if (!shouldUpdateName && !shouldUpdateUser) {
+            if (!shouldUpdateName) {
                 throw new IllegalArgumentException("No changes detected for device ID: " + command.deviceId());
             }
 
-            var targetUserId = shouldUpdateUser ? command.userId() : currentUserId;
             var targetDeviceName = shouldUpdateName ? command.deviceName() : currentName;
-
-            // Check uniqueness only if target values are present
-            if (targetUserId != null && targetDeviceName != null) {
-                var existingDevice = repository.existsDeviceByUser_IdAndDeviceNameNot(targetUserId, targetDeviceName);
-                // repository method expected to indicate existence; adapt condition if it returns non-boolean
-                if (Boolean.TRUE.equals(existingDevice) || (existingDevice != null && existingDevice.equals(Boolean.TRUE))) {
-                    throw new IllegalArgumentException("Device with name '" + targetDeviceName + "' already exists for user ID: " + targetUserId);
-                }
-            }
-
-            if (shouldUpdateUser) {
-                var user = externalIamService.fetchUserById(command.userId());
-                device.get().setUser(user);
-            }
 
             if (shouldUpdateName) {
                 device.get().setDeviceName(command.deviceName());

@@ -8,7 +8,7 @@ public class DeviceResourceFromEntityAssembler {
         return new DeviceResource(
                 entity.getId(),
                 entity.getDeviceName(),
-                entity.getUser().getId()
+                entity.getDeviceType()
         );
     }
 }

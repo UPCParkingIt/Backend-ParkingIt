@@ -47,7 +47,7 @@ public class DevicesController {
 
         var createDeviceCommand = new CreateDeviceCommand(
                 resource.deviceName(),
-                userId
+                resource.deviceType()
         );
 
         var device = deviceCommandService.handle(createDeviceCommand);
