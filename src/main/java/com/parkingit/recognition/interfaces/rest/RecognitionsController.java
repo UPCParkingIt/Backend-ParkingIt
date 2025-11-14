@@ -1,0 +1,95 @@
+package com.parkingit.recognition.interfaces.rest;
+
+import com.parkingit.recognition.domain.model.queries.GetAllFaceRecognitionsQuery;
+import com.parkingit.recognition.domain.model.queries.GetAllLicensePlateRecognitionsQuery;
+import com.parkingit.recognition.domain.model.queries.GetFaceRecognitionByIdQuery;
+import com.parkingit.recognition.domain.model.queries.GetLicensePlateRecognitionByIdQuery;
+import com.parkingit.recognition.domain.services.FaceRecognitionCommandService;
+import com.parkingit.recognition.domain.services.FaceRecognitionQueryService;
+import com.parkingit.recognition.domain.services.LicensePlateRecognitionCommandService;
+import com.parkingit.recognition.domain.services.LicensePlateRecognitionQueryService;
+import com.parkingit.recognition.interfaces.rest.resources.CreateFRResource;
+import com.parkingit.recognition.interfaces.rest.resources.CreateLPRResource;
+import com.parkingit.recognition.interfaces.rest.resources.FRResource;
+import com.parkingit.recognition.interfaces.rest.resources.LPRResource;
+import com.parkingit.recognition.interfaces.rest.transform.CreateFRCommandFromResourceAssembler;
+import com.parkingit.recognition.interfaces.rest.transform.CreateLPRCommandFromResourceAssembler;
+import com.parkingit.recognition.interfaces.rest.transform.FRResourceFromEntityAssembler;
+import com.parkingit.recognition.interfaces.rest.transform.LPRResourceFromEntityAssembler;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@AllArgsConstructor
+@CrossOrigin(origins = "*", methods = { RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE })
+@RestController
+@RequestMapping(value = "/api/v1/recognitions", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Recognitions", description = "Recognitions Management Endpoint")
+public class RecognitionsController {
+    private final FaceRecognitionCommandService frCommandService;
+    private final FaceRecognitionQueryService frQueryService;
+    private final LicensePlateRecognitionCommandService lprCommandService;
+    private final LicensePlateRecognitionQueryService lprQueryService;
+
+    @PostMapping("/fr")
+    public ResponseEntity<FRResource> createFaceRecognition(@RequestBody CreateFRResource resource) {
+        var createFRCommand = CreateFRCommandFromResourceAssembler.toCommandFromResource(resource);
+        var FR = frCommandService.handle(createFRCommand);
+        if (FR.isEmpty()) { return ResponseEntity.badRequest().build(); }
+        var frResource = FRResourceFromEntityAssembler.toResourceFromEntity(FR.get());
+        return ResponseEntity.ok(frResource);
+    }
+
+    @GetMapping("/fr/{id}")
+    public ResponseEntity<FRResource> getFaceRecognitionById(@PathVariable UUID id) {
+        var getFRByIdQuery = new GetFaceRecognitionByIdQuery(id);
+        var FR = frQueryService.handle(getFRByIdQuery);
+        if (FR.isEmpty()) { return ResponseEntity.notFound().build(); }
+        var frResource = FRResourceFromEntityAssembler.toResourceFromEntity(FR.get());
+        return ResponseEntity.ok(frResource);
+    }
+
+    @GetMapping("/fr")
+    public ResponseEntity<List<FRResource>> getAllFaceRecognitions() {
+        var getAllFRQuery = new GetAllFaceRecognitionsQuery();
+        var FRs = frQueryService.handle(getAllFRQuery);
+        if (FRs.isEmpty()) { return ResponseEntity.notFound().build(); }
+        var frResources = FRs.stream()
+                .map(FRResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(frResources);
+    }
+
+    @PostMapping("/lpr")
+    public ResponseEntity<LPRResource> createLicensePlateRecognition(@RequestBody CreateLPRResource resource) {
+        var createLPRCommand = CreateLPRCommandFromResourceAssembler.toCommandFromResource(resource);
+        var LPR = lprCommandService.handle(createLPRCommand);
+        if (LPR.isEmpty()) { return ResponseEntity.badRequest().build(); }
+        var frResource = LPRResourceFromEntityAssembler.toResourceFromEntity(LPR.get());
+        return ResponseEntity.ok(frResource);
+    }
+
+    @GetMapping("/lpr/{id}")
+    public ResponseEntity<LPRResource> getLicensePlateRecognitionById(@PathVariable UUID id) {
+        var getLPRByIdQuery = new GetLicensePlateRecognitionByIdQuery(id);
+        var LPR = lprQueryService.handle(getLPRByIdQuery);
+        if (LPR.isEmpty()) { return ResponseEntity.notFound().build(); }
+        var lprResource = LPRResourceFromEntityAssembler.toResourceFromEntity(LPR.get());
+        return ResponseEntity.ok(lprResource);
+    }
+
+    @GetMapping("/lpr")
+    public ResponseEntity<List<LPRResource>> getAllLicensePlateRecognitions() {
+        var LPRs = lprQueryService.handle(new GetAllLicensePlateRecognitionsQuery());
+        if (LPRs.isEmpty()) { return ResponseEntity.notFound().build(); }
+        var lprResources = LPRs.stream()
+                .map(LPRResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(lprResources);
+    }
+}

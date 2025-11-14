@@ -10,7 +10,7 @@ public class UpdateDeviceCommandFromResourceAssembler {
         return new UpdateDeviceCommand(
                 id,
                 resource.deviceName(),
-                resource.userId()
+                resource.deviceType()
         );
     }
 }

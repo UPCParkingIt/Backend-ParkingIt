@@ -7,7 +7,7 @@ public class CreateDeviceCommandFromResourceAssembler {
     public static CreateDeviceCommand toCommandFromResource(CreateDeviceResource resource) {
         return new CreateDeviceCommand(
                 resource.deviceName(),
-                resource.userId()
+                resource.deviceType()
         );
     }
 }
