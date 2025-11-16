@@ -9,7 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface DeviceRepository extends JpaRepository<Device, UUID> {
-    List<Device> findAllByUser_Id(UUID userId);
-    List<Device> findDevicesByDeviceNameContains(String deviceName);
-    Object existsDeviceByUser_IdAndDeviceNameNot(UUID userId, String deviceName);
+    List<Device> findDevicesByDeviceNameContains(String s);
 }
