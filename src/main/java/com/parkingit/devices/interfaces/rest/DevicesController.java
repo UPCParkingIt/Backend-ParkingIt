@@ -4,9 +4,7 @@ import com.parkingit.devices.application.internal.outboundservices.acl.ExternalI
 import com.parkingit.devices.domain.model.commands.ActivateDeviceCommand;
 import com.parkingit.devices.domain.model.commands.CreateDeviceCommand;
 import com.parkingit.devices.domain.model.commands.DeactivateDeviceCommand;
-import com.parkingit.devices.domain.model.commands.UpdateDeviceCommand;
 import com.parkingit.devices.domain.model.queries.GetAllDevicesByNameQuery;
-import com.parkingit.devices.domain.model.queries.GetAllDevicesByUserIdQuery;
 import com.parkingit.devices.domain.model.queries.GetAllDevicesQuery;
 import com.parkingit.devices.domain.model.queries.GetDeviceByIdQuery;
 import com.parkingit.devices.domain.services.DeviceCommandService;
@@ -14,7 +12,6 @@ import com.parkingit.devices.domain.services.DeviceQueryService;
 import com.parkingit.devices.interfaces.rest.resources.CreateDeviceResource;
 import com.parkingit.devices.interfaces.rest.resources.DeviceResource;
 import com.parkingit.devices.interfaces.rest.resources.UpdateDeviceResource;
-import com.parkingit.devices.interfaces.rest.transform.CreateDeviceCommandFromResourceAssembler;
 import com.parkingit.devices.interfaces.rest.transform.DeviceResourceFromEntityAssembler;
 import com.parkingit.devices.interfaces.rest.transform.UpdateDeviceCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -96,21 +93,6 @@ public class DevicesController {
         
         var devices = deviceQueryService.handle(getAllDevicesQuery);
         
-        var deviceResources = devices.stream()
-                .map(DeviceResourceFromEntityAssembler::toResourceFromEntity)
-                .toList();
-        return ResponseEntity.ok(deviceResources);
-    }
-    
-    @GetMapping("/user")
-    public ResponseEntity<List<DeviceResource>> getAllDevicesByUserId(@AuthenticationPrincipal UserDetails userDetails) {
-        var email = userDetails.getUsername();
-        var userId = externalIamService.fetchUserIdByEmail(email);
-
-        var getAllDevicesByUserIdQuery = new GetAllDevicesByUserIdQuery(userId);
-
-        var devices = deviceQueryService.handle(getAllDevicesByUserIdQuery);
-
         var deviceResources = devices.stream()
                 .map(DeviceResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();

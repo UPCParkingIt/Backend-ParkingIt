@@ -2,7 +2,6 @@ package com.parkingit.devices.application.internal.queryservices;
 
 import com.parkingit.devices.domain.model.aggregates.Device;
 import com.parkingit.devices.domain.model.queries.GetAllDevicesByNameQuery;
-import com.parkingit.devices.domain.model.queries.GetAllDevicesByUserIdQuery;
 import com.parkingit.devices.domain.model.queries.GetAllDevicesQuery;
 import com.parkingit.devices.domain.model.queries.GetDeviceByIdQuery;
 import com.parkingit.devices.domain.services.DeviceQueryService;
@@ -26,11 +25,6 @@ public class DeviceQueryServiceImpl implements DeviceQueryService {
     @Override
     public List<Device> handle(GetAllDevicesQuery query) {
         return repository.findAll();
-    }
-
-    @Override
-    public List<Device> handle(GetAllDevicesByUserIdQuery query) {
-        return repository.findAllByUser_Id(query.userId());
     }
 
     @Override
