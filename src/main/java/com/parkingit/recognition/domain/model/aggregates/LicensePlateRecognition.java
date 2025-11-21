@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 public class LicensePlateRecognition extends AuditableAbstractAggregateRoot<LicensePlateRecognition> {
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -21,6 +22,7 @@ public class LicensePlateRecognition extends AuditableAbstractAggregateRoot<Lice
     private Device device;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
     @NotNull
