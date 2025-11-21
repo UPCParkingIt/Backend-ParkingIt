@@ -16,9 +16,11 @@ import lombok.Setter;
 @Setter
 public class AccessLog extends AuditableAbstractAggregateRoot<AccessLog> {
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "device_id")
     private Device device;
 
     @NotNull
