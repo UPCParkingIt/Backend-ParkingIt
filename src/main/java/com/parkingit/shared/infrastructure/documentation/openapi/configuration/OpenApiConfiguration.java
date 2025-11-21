@@ -18,14 +18,14 @@ public class OpenApiConfiguration {
         var openApi = new OpenAPI();
         openApi
                 .info(new Info()
-                        .title("Grow With Me API")
-                        .description("Grow With Me - CupOfTech REST API documentation.")
+                        .title("ParkingIt API")
+                        .description("ParkingIt REST API documentation.")
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0")
                                 .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("Grow With Me API Backend Documentation")
-                        .url("https://github.com/upc-pre-SI729-2402-WX51-G2-CupOfTech/GrowWithMe-Backend"));
+                        .description("ParkingIt API Backend Documentation")
+                        .url("https://github.com/UPCParkingIt/Backend-ParkingIt"));
         // Add Security Scheme
         final String securitySchemeName = "bearerAuth";
         openApi.addSecurityItem(new SecurityRequirement()
