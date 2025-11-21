@@ -3,9 +3,7 @@ package com.parkingit.devices.domain.model.aggregates;
 import com.parkingit.devices.domain.model.valueobjects.DeviceType;
 import com.parkingit.iam.domain.model.aggregates.User;
 import com.parkingit.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,11 +13,13 @@ import lombok.Setter;
 @Setter
 public class Device extends AuditableAbstractAggregateRoot<Device> {
     @NotNull
-    public String deviceName;
+    private String deviceName;
 
-    public DeviceType deviceType;
+    @Embedded
+    @Enumerated(EnumType.STRING)
+    private DeviceType deviceType;
 
-    public Boolean isActive;
+    private Boolean isActive;
 
     public Device() {}
 
