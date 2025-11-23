@@ -8,7 +8,8 @@ public class CreateReservationCommandFromResourceAssembler {
         return new CreateReservationCommand(
                 resource.reservationDate(),
                 resource.userId(),
-                resource.location()
+                resource.location(),
+                resource.hours()
         );
     }
 }

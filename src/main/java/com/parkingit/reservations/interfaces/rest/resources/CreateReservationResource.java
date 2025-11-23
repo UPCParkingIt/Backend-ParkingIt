@@ -6,6 +6,7 @@ import java.util.UUID;
 public record CreateReservationResource(
         Date reservationDate,
         UUID userId,
-        String location
+        String location,
+        Integer hours
 ) {
 }
