@@ -7,6 +7,7 @@ public record ReservationResource(
         UUID id,
         Date reservationDate,
         UUID userId,
-        String location
+        String location,
+        Integer hours
 ) {
 }

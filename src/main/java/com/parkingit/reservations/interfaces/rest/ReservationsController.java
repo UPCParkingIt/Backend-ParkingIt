@@ -49,7 +49,6 @@ public class ReservationsController {
     @GetMapping
     public ResponseEntity<List<ReservationResource>> getAllReservations() {
         var reservations = reservationQueryService.handle(new GetAllReservationsQuery());
-        if (reservations.isEmpty()) { return ResponseEntity.notFound().build(); }
         var reservationResources = reservations.stream()
                 .map(ReservationResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
@@ -59,9 +58,6 @@ public class ReservationsController {
     @GetMapping("users/{userId}")
     public ResponseEntity<List<ReservationResource>> getAllReservationsByUserId(@PathVariable UUID userId) {
         var reservations = reservationQueryService.handle(new GetAllReservationsByUserIdQuery(userId));
-        if (reservations.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         var reservationResources = reservations.stream()
                 .map(ReservationResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();

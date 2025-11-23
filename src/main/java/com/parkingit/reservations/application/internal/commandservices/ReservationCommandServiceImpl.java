@@ -28,7 +28,8 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
             var newReservation = new Reservation(
                     command.reservationDate(),
                     userResult,
-                    command.location()
+                    command.location(),
+                    command.hours()
             );
 
             var savedReservation = reservationRepository.save(newReservation);

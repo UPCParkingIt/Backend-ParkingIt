@@ -9,7 +9,8 @@ public class ReservationResourceFromEntityAssembler {
                 entity.getId(),
                 entity.getReservationDate(),
                 entity.getUser().getId(),
-                entity.getLocation()
+                entity.getLocation(),
+                entity.getHours()
         );
     }
 }

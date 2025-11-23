@@ -27,11 +27,14 @@ public class Reservation extends AuditableAbstractAggregateRoot<Reservation> {
     @NotNull
     private String location;
 
+    private Integer hours;
+
     public Reservation() {}
 
-    public Reservation(Date reservationDate, User user, String location) {
+    public Reservation(Date reservationDate, User user, String location, Integer hours) {
         this.reservationDate = reservationDate;
         this.user = user;
         this.location = location;
+        this.hours = hours;
     }
 }
