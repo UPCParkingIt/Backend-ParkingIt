@@ -38,9 +38,9 @@ public class DevicesController {
     private final ExternalIamService externalIamService;
 
     @PostMapping
-    public ResponseEntity<DeviceResource> createDevice(@AuthenticationPrincipal UserDetails userDetails, @RequestBody CreateDeviceResource resource) {
-        var email = userDetails.getUsername();
-        var userId = externalIamService.fetchUserIdByEmail(email);
+    public ResponseEntity<DeviceResource> createDevice(@RequestBody CreateDeviceResource resource) {
+        //var email = userDetails.getUsername();
+        //var userId = externalIamService.fetchUserIdByEmail(email);
 
         var createDeviceCommand = new CreateDeviceCommand(
                 resource.deviceName(),
@@ -49,7 +49,7 @@ public class DevicesController {
 
         var device = deviceCommandService.handle(createDeviceCommand);
 
-        if (device.isEmpty()) throw new NoSuchElementException("Device not found: " + email);
+        //if (device.isEmpty()) throw new NoSuchElementException("Device not found: " + email);
 
         var deviceResource = DeviceResourceFromEntityAssembler.toResourceFromEntity(device.get());
         return new ResponseEntity<>(deviceResource, HttpStatus.CREATED);
