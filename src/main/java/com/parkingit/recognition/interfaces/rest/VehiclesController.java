@@ -3,6 +3,7 @@ package com.parkingit.recognition.interfaces.rest;
 import com.parkingit.recognition.domain.model.entities.Vehicle;
 import com.parkingit.recognition.domain.model.queries.GetAllVehiclesByLicensePlateNumberQuery;
 import com.parkingit.recognition.domain.model.queries.GetAllVehiclesQuery;
+import com.parkingit.recognition.domain.model.queries.GetLastVehicleQuery;
 import com.parkingit.recognition.domain.model.queries.GetVehicleByIdQuery;
 import com.parkingit.recognition.domain.services.VehicleCommandService;
 import com.parkingit.recognition.domain.services.VehicleQueryService;
@@ -63,5 +64,13 @@ public class VehiclesController {
                 .map(VehicleResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
         return ResponseEntity.ok(vehicleResources);
+    }
+
+    @GetMapping("/last")
+    public ResponseEntity<VehicleResource> getLastVehicle() {
+        var getVehicleByIdQuery = new GetLastVehicleQuery();
+        var vehicle = vehicleQueryService.handle(getVehicleByIdQuery);
+        var vehicleResource = VehicleResourceFromEntityAssembler.toResourceFromEntity(vehicle.get());
+        return ResponseEntity.ok(vehicleResource);
     }
 }
