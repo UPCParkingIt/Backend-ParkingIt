@@ -26,7 +26,7 @@ public class RecognitionProcessCommandServiceImpl implements RecognitionProcessC
     @Override
     public Optional<Boolean> handle(DeactivateRecognitionProcessCommand command) {
         var process = new RecognitionProcess();
-        process.startProcess();
+        process.stopProcess();
         recognitionProcessRepository.save(process);
         return Optional.of(Boolean.FALSE);
     }
