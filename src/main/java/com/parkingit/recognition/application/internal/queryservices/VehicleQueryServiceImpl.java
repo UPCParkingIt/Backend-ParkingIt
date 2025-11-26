@@ -3,6 +3,7 @@ package com.parkingit.recognition.application.internal.queryservices;
 import com.parkingit.recognition.domain.model.entities.Vehicle;
 import com.parkingit.recognition.domain.model.queries.GetAllVehiclesByLicensePlateNumberQuery;
 import com.parkingit.recognition.domain.model.queries.GetAllVehiclesQuery;
+import com.parkingit.recognition.domain.model.queries.GetLastVehicleQuery;
 import com.parkingit.recognition.domain.model.queries.GetVehicleByIdQuery;
 import com.parkingit.recognition.domain.services.VehicleQueryService;
 import com.parkingit.recognition.infrastructure.persistence.jpa.repositories.VehicleRepository;
@@ -30,5 +31,10 @@ public class VehicleQueryServiceImpl implements VehicleQueryService {
     @Override
     public Optional<Vehicle> handle(GetVehicleByIdQuery query) {
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Vehicle> handle(GetLastVehicleQuery query) {
+        return vehicleRepository.findLatestVehicle();
     }
 }
