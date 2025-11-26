@@ -15,7 +15,6 @@ public class Device extends AuditableAbstractAggregateRoot<Device> {
     @NotNull
     private String deviceName;
 
-    @Embedded
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
 
