@@ -1,13 +1,13 @@
 package com.parkingit.recognition.interfaces.rest;
 
+import com.parkingit.recognition.domain.model.commands.ActivateRecognitionProcessCommand;
+import com.parkingit.recognition.domain.model.commands.DeactivateRecognitionProcessCommand;
+import com.parkingit.recognition.domain.model.commands.GetCurrentRecognitionProcessStatusQuery;
 import com.parkingit.recognition.domain.model.queries.GetAllFaceRecognitionsQuery;
 import com.parkingit.recognition.domain.model.queries.GetAllLicensePlateRecognitionsQuery;
 import com.parkingit.recognition.domain.model.queries.GetFaceRecognitionByIdQuery;
 import com.parkingit.recognition.domain.model.queries.GetLicensePlateRecognitionByIdQuery;
-import com.parkingit.recognition.domain.services.FaceRecognitionCommandService;
-import com.parkingit.recognition.domain.services.FaceRecognitionQueryService;
-import com.parkingit.recognition.domain.services.LicensePlateRecognitionCommandService;
-import com.parkingit.recognition.domain.services.LicensePlateRecognitionQueryService;
+import com.parkingit.recognition.domain.services.*;
 import com.parkingit.recognition.interfaces.rest.resources.CreateFRResource;
 import com.parkingit.recognition.interfaces.rest.resources.CreateLPRResource;
 import com.parkingit.recognition.interfaces.rest.resources.FRResource;
@@ -35,12 +35,14 @@ public class RecognitionsController {
     private final FaceRecognitionQueryService frQueryService;
     private final LicensePlateRecognitionCommandService lprCommandService;
     private final LicensePlateRecognitionQueryService lprQueryService;
+    private final RecognitionProcessCommandService recognitionProcessCommandService;
+    private final RecognitionProcessQueryService recognitionProcessQueryService;
 
     @PostMapping("/fr")
-    public ResponseEntity<FRResource> createFaceRecognition(@RequestBody CreateFRResource resource) {
+    public ResponseEntity<FRResource>
+    createFaceRecognition(@RequestBody CreateFRResource resource) {
         var createFRCommand = CreateFRCommandFromResourceAssembler.toCommandFromResource(resource);
         var FR = frCommandService.handle(createFRCommand);
-        if (FR.isEmpty()) { return ResponseEntity.badRequest().build(); }
         var frResource = FRResourceFromEntityAssembler.toResourceFromEntity(FR.get());
         return ResponseEntity.ok(frResource);
     }
@@ -49,7 +51,6 @@ public class RecognitionsController {
     public ResponseEntity<FRResource> getFaceRecognitionById(@PathVariable UUID id) {
         var getFRByIdQuery = new GetFaceRecognitionByIdQuery(id);
         var FR = frQueryService.handle(getFRByIdQuery);
-        if (FR.isEmpty()) { return ResponseEntity.notFound().build(); }
         var frResource = FRResourceFromEntityAssembler.toResourceFromEntity(FR.get());
         return ResponseEntity.ok(frResource);
     }
@@ -58,7 +59,6 @@ public class RecognitionsController {
     public ResponseEntity<List<FRResource>> getAllFaceRecognitions() {
         var getAllFRQuery = new GetAllFaceRecognitionsQuery();
         var FRs = frQueryService.handle(getAllFRQuery);
-        if (FRs.isEmpty()) { return ResponseEntity.notFound().build(); }
         var frResources = FRs.stream()
                 .map(FRResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
@@ -69,7 +69,6 @@ public class RecognitionsController {
     public ResponseEntity<LPRResource> createLicensePlateRecognition(@RequestBody CreateLPRResource resource) {
         var createLPRCommand = CreateLPRCommandFromResourceAssembler.toCommandFromResource(resource);
         var LPR = lprCommandService.handle(createLPRCommand);
-        if (LPR.isEmpty()) { return ResponseEntity.badRequest().build(); }
         var frResource = LPRResourceFromEntityAssembler.toResourceFromEntity(LPR.get());
         return ResponseEntity.ok(frResource);
     }
@@ -78,7 +77,6 @@ public class RecognitionsController {
     public ResponseEntity<LPRResource> getLicensePlateRecognitionById(@PathVariable UUID id) {
         var getLPRByIdQuery = new GetLicensePlateRecognitionByIdQuery(id);
         var LPR = lprQueryService.handle(getLPRByIdQuery);
-        if (LPR.isEmpty()) { return ResponseEntity.notFound().build(); }
         var lprResource = LPRResourceFromEntityAssembler.toResourceFromEntity(LPR.get());
         return ResponseEntity.ok(lprResource);
     }
@@ -86,10 +84,30 @@ public class RecognitionsController {
     @GetMapping("/lpr")
     public ResponseEntity<List<LPRResource>> getAllLicensePlateRecognitions() {
         var LPRs = lprQueryService.handle(new GetAllLicensePlateRecognitionsQuery());
-        if (LPRs.isEmpty()) { return ResponseEntity.notFound().build(); }
         var lprResources = LPRs.stream()
                 .map(LPRResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
         return ResponseEntity.ok(lprResources);
+    }
+
+    @PostMapping("/process/activate")
+    public ResponseEntity<Boolean> activateRecognitionProcess() {
+        var command = new ActivateRecognitionProcessCommand();
+        var result = recognitionProcessCommandService.handle(command);
+        return ResponseEntity.ok(result.orElse(false));
+    }
+
+    @DeleteMapping("/process/deactivate")
+    public ResponseEntity<Boolean> deactivateRecognitionProcess() {
+        var command = new DeactivateRecognitionProcessCommand();
+        var result = recognitionProcessCommandService.handle(command);
+        return ResponseEntity.ok(result.orElse(false));
+    }
+
+    @GetMapping("/process/status")
+    public ResponseEntity<Boolean> getRecognitionProcessStatus() {
+        var query = new GetCurrentRecognitionProcessStatusQuery();
+        var isActive = recognitionProcessQueryService.handle(query);
+        return ResponseEntity.ok(isActive.orElse(false));
     }
 }
