@@ -33,7 +33,6 @@ public class VehiclesController {
     public ResponseEntity<VehicleResource> createVehicle(@RequestBody CreateVehicleResource resource) {
         var createVehicleCommand = CreateVehicleCommandFromResourceAssembler.toCommandFromResource(resource);
         var vehicle = vehicleCommandService.handle(createVehicleCommand);
-        if (vehicle.isEmpty()) { return ResponseEntity.badRequest().build(); }
         var vehicleResource = VehicleResourceFromEntityAssembler.toResourceFromEntity(vehicle.get());
         return new ResponseEntity<>(vehicleResource, HttpStatus.CREATED);
     }
@@ -42,7 +41,6 @@ public class VehiclesController {
     public ResponseEntity<VehicleResource> getVehicleById(@PathVariable UUID id) {
         var getVehicleByIdQuery = new GetVehicleByIdQuery(id);
         var vehicle = vehicleQueryService.handle(getVehicleByIdQuery);
-        if (vehicle.isEmpty()) { return ResponseEntity.badRequest().build(); }
         var vehicleResource = VehicleResourceFromEntityAssembler.toResourceFromEntity(vehicle.get());
         return ResponseEntity.ok(vehicleResource);
     }
@@ -51,7 +49,6 @@ public class VehiclesController {
     public ResponseEntity<List<VehicleResource>> getAllVehicles() {
         var getAllVehiclesQuery = new GetAllVehiclesQuery();
         var vehicles = vehicleQueryService.handle(getAllVehiclesQuery);
-        if (vehicles.isEmpty()) { return ResponseEntity.notFound().build(); }
         var vehicleResources = vehicles.stream()
                 .map(VehicleResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
@@ -62,7 +59,6 @@ public class VehiclesController {
     public ResponseEntity<List<VehicleResource>> getAllVehiclesByLicensePlateNumber(@PathVariable String licensePlateNumber) {
         var getAllVehiclesByLicensePlateNumberQuery = new GetAllVehiclesByLicensePlateNumberQuery(licensePlateNumber);
         var vehicles = vehicleQueryService.handle(getAllVehiclesByLicensePlateNumberQuery);
-        if (vehicles.isEmpty()) { return ResponseEntity.notFound().build(); }
         var vehicleResources = vehicles.stream()
                 .map(VehicleResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
