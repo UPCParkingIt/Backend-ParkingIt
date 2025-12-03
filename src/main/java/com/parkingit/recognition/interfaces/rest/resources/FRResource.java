@@ -1,5 +1,6 @@
 package com.parkingit.recognition.interfaces.rest.resources;
 
+import java.util.Date;
 import java.util.UUID;
 
 public record FRResource(
@@ -7,6 +8,7 @@ public record FRResource(
         UUID userId,
         UUID deviceId,
         byte[] faceImageData,
-        String faceImageFormat
+        String faceImageFormat,
+        Date createdAt
 ) {
 }

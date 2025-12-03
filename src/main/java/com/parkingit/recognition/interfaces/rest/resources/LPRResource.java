@@ -1,5 +1,6 @@
 package com.parkingit.recognition.interfaces.rest.resources;
 
+import java.util.Date;
 import java.util.UUID;
 
 public record LPRResource(
@@ -7,6 +8,7 @@ public record LPRResource(
         UUID userId,
         UUID deviceId,
         UUID vehicleId,
-        byte[] plateImageData
+        byte[] plateImageData,
+        Date createdAt
 ) {
 }

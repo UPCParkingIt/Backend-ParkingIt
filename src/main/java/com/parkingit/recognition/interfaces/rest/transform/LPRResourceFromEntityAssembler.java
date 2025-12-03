@@ -10,7 +10,8 @@ public class LPRResourceFromEntityAssembler {
                 entity.getUser().getId(),
                 entity.getDevice().getId(),
                 entity.getVehicle().getId(),
-                entity.getPlateImageData()
+                entity.getPlateImageData(),
+                entity.getCreatedAt()
         );
     }
 }
