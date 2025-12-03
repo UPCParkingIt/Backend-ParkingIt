@@ -41,7 +41,7 @@ public class ReservationsController {
     public ResponseEntity<ReservationResource> getReservationById(@PathVariable UUID id) {
         var getReservationByIdQuery = new GetReservationByIdQuery(id);
         var reservation = reservationQueryService.handle(getReservationByIdQuery);
-        if (reservation.isEmpty()) { return ResponseEntity.notFound().build(); }
+        if (reservation.isEmpty()) { return ResponseEntity.ok(null); }
         var reservationResource = ReservationResourceFromEntityAssembler.toResourceFromEntity(reservation.get());
         return ResponseEntity.ok(reservationResource);
     }
@@ -55,9 +55,10 @@ public class ReservationsController {
         return ResponseEntity.ok(reservationResources);
     }
 
-    @GetMapping("users/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<List<ReservationResource>> getAllReservationsByUserId(@PathVariable UUID userId) {
         var reservations = reservationQueryService.handle(new GetAllReservationsByUserIdQuery(userId));
+        if (reservations.isEmpty()) { return ResponseEntity.ok(null); }
         var reservationResources = reservations.stream()
                 .map(ReservationResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
