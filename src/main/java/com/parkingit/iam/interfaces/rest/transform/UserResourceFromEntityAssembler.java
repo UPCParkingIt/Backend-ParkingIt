@@ -18,7 +18,8 @@ public class UserResourceFromEntityAssembler {
                 user.getPhoneNumber(),
                 user.getProfilePhotoUrl(),
                 user.getDniNumber(),
-                roles
+                roles,
+                user.getCreatedAt()
         );
     }
 }

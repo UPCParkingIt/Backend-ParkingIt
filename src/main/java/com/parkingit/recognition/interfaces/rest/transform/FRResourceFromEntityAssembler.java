@@ -11,7 +11,8 @@ public class FRResourceFromEntityAssembler {
                 entity.getUser().getId(),
                 entity.getDevice().getId(),
                 entity.getFaceImageData(),
-                entity.getFaceEncodingVector()
+                entity.getFaceEncodingVector(),
+                entity.getCreatedAt()
         );
     }
 }

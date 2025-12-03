@@ -1,5 +1,6 @@
 package com.parkingit.iam.interfaces.rest.resources;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ public record UserResource(
         String phoneNumber,
         String profilePhotoUrl,
         String dniNumber,
-        List<String> roles
+        List<String> roles,
+        Date createdAt
 ) {
 }

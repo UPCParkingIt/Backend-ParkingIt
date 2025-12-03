@@ -10,7 +10,8 @@ public class AccessLogResourceFromEntityAssembler {
                 entity.getUser().getId(),
                 entity.getDevice().getId(),
                 entity.getAccessType(),
-                entity.getAuthenticationMethod()
+                entity.getAuthenticationMethod(),
+                entity.getCreatedAt()
         );
     }
 }

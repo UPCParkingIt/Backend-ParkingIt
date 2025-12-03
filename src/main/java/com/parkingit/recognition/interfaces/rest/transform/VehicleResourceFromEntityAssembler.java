@@ -9,7 +9,8 @@ public class VehicleResourceFromEntityAssembler {
                 entity.getId(),
                 entity.getLicensePlateNumber(),
                 entity.getVehicleType(),
-                entity.getColor()
+                entity.getColor(),
+                entity.getCreatedAt()
         );
     }
 }
