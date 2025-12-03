@@ -70,6 +70,9 @@ public class VehiclesController {
     public ResponseEntity<VehicleResource> getLastVehicle() {
         var getVehicleByIdQuery = new GetLastVehicleQuery();
         var vehicle = vehicleQueryService.handle(getVehicleByIdQuery);
+        if (vehicle.isEmpty()) {
+            return ResponseEntity.ok(null);
+        }
         var vehicleResource = VehicleResourceFromEntityAssembler.toResourceFromEntity(vehicle.get());
         return ResponseEntity.ok(vehicleResource);
     }
